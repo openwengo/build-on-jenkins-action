@@ -1,0 +1,13 @@
+name: 'call github-webhook on jenkins'
+description: 'call github-webhook on private jenkins'
+inputs:
+  jenkins_url: 
+    description: 'url of jenkins server'
+    required: true
+    default: ''
+outputs:
+  http_status: # id of output
+    description: 'http status of jenkins '
+runs:
+  using: 'node12'
+  main: 'index.js'
