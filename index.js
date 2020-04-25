@@ -21,9 +21,9 @@ try {
   var responseStatus = 0 ;
   request.post({ url: webHookUrl ,
             agentOptions: { rejectUnauthorized: false },
-            body: payload,
+            body: github.context.payload,
             json: true,
-            headers: { "X-GitHub-Event" : "push", "content-type": "application/json" }
+            headers: { "X-GitHub-Event" : "push", "Content-Type": "application/json" }
           }, function (err, response, body) {
             console.log(`The response statusCode is ${response.statusCode}`);
             responseStatus = response.statusCode ;
