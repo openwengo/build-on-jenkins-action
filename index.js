@@ -12,30 +12,23 @@ try {
   // parse jenkins url
   const parsedUrl = url.parse(jenkinsUrl) ;
   const webHookUrl = new URL('/github-webhook/', jenkinsUrl);
-  var agentOptions;
-  var agent;
-  
-  agentOptions = {
-    host: parsedUrl.host,
-    port: parsedUrl.port,
-    path: '/',
-    rejectUnauthorized: false
-  }
-  agent = new https.Agent(agentOptions)
 
   // Get the JSON webhook payload for the event that triggered the workflow
   const payload = JSON.stringify(github.context.payload, undefined, 2)
   console.log(`The event payload: ${payload}`);
+  var responseStatus = 0 ;
   request.post({ url: webHookUrl ,
+            agentOptions: { rejectUnauthorized: false },
             agent: agent, 
-            body: ${payload},
+            body: payload,
             json: true,
             headers: { "X-GitHub-Event" : "push", "content-type": "application/json" }
           }, function (err, response, body) {
-          console.log(response);
+          console.log(`The response statusCode is ${response.statusCode}`);
+          responseStatus = response.statusCode ;
           }
   )
-  core.setOutput("http_status", response.statusCode);
+  core.setOutput("http_status", responseStatus);
 } catch (error) {
   core.setFailed(error.message);
 }
